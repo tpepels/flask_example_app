@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, make_response
 app = Flask(__name__)
 
 from controler import hash_password, check_password, password_complexity
-from mongo_model import find_single_user, save_new_user
+from models.mongo_model import find_single_user, save_new_user
 
 INVALID_MESSAGE = "Invalid username or password"
 

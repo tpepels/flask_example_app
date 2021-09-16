@@ -2,7 +2,7 @@ import os
 import random
 import hashlib
 
-from model import User
+from models.mongo_model import User
 
 pepper_letters = ["a", "b", "c", "z"]
 
@@ -33,6 +33,7 @@ def hash_password(password: str):
 
 
 def check_password(user: User, password: str):
+    print(user.id)
     # Getting the values back out
     salt = user.password[:32]  # 32 is the length of the salt
     key = user.password[32:]

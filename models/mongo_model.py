@@ -1,19 +1,19 @@
-from pymongo import MongoClient
-
 # Based on the tutorial at:
 # - https://www.mongodb.com/blog/post/getting-started-with-python-and-mongodb
+from pymongo import MongoClient
 
-# pprint library is used to make the output look more pretty
-from pprint import pprint
+# https://api.mongodb.com/python/2.8/tutorial.html#getting-a-single-document-with-find-one
+from bson.objectid import ObjectId
+
 
 # Use a separate file to store the connection string because we don't want to push this to github
 from private import mongo_connection
 
+# I'm using a hosted mongodb instance (free up to 500MB)
+# https://cloud.mongodb.com/
 client = MongoClient(mongo_connection)
 
 db = client.login_data
-
-# https://cloud.mongodb.com/
 
 
 class User:
@@ -33,9 +33,10 @@ class User:
 
 def find_single_user(**kwargs):
     if "id" in kwargs:
-        kwargs["_id"] = kwargs["id"]
+        kwargs["_id"] = ObjectId(kwargs["id"])
         kwargs.pop("id")
 
+    print(kwargs)
     result = db.user.find_one(kwargs)
 
     if result:
