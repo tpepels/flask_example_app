@@ -1,4 +1,4 @@
-# flask_example_app
+# Flask Example App
 Example database application for my favorite students.
 
 This demo shows the following:
