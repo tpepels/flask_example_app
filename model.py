@@ -1,7 +1,8 @@
+from pathlib import Path
 from app import app
 from flask_sqlalchemy import SQLAlchemy
 
-
+Path("db").mkdir(parents=True, exist_ok=True)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/my_app.db"
 db = SQLAlchemy(app)
 
