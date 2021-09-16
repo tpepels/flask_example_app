@@ -17,4 +17,15 @@ class User(db.Model):
         return f"User {self.username}, {self.email}"
 
 
+def find_single_user(**kwargs):
+    return User.query.filter_by(**kwargs).first()
+
+
+def save_new_user(username, hashed_pw, email):
+    new_user = User(username=username, email=email, password=hashed_pw)
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user
+
+
 db.create_all()

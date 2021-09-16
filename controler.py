@@ -15,6 +15,7 @@ def hash_password(password: str):
     pep_loc = random.randint(0, len(password))
     pep_char = random.choice(pepper_letters)
     password = password[:pep_loc] + pep_char + password[pep_loc:]
+
     print(f"Peppered password: {password}")
 
     # Create a 64 byte key

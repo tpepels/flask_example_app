@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, make_response
 app = Flask(__name__)
 
 from controler import hash_password, check_password, password_complexity
-from model import db, User
+from mongo_model import find_single_user, save_new_user
 
 INVALID_MESSAGE = "Invalid username or password"
 
@@ -13,7 +13,7 @@ INVALID_MESSAGE = "Invalid username or password"
 
 @app.route("/user/<user_id>")
 def get_user(user_id: int):
-    user = User.query.filter_by(id=user_id).first()
+    user = find_single_user(id=user_id)
     if user:
         return make_response({"username": user.username, "email": user.email}, 200)
     else:
@@ -35,11 +35,11 @@ def create_user():
     email = request.form["email"]
     password = request.form["password"]
 
-    the_user = User.query.filter_by(username=username).first()
+    the_user = find_single_user(username=username)
     if the_user is not None:
         return make_response({"error": "Please select a different username."}, 400)
 
-    the_user = User.query.filter_by(email=email).first()
+    the_user = find_single_user(email=email)
     if the_user is not None:
         return make_response({"error": "A user with this e-mail address already exists."}, 400)
 
@@ -50,9 +50,7 @@ def create_user():
     # Don't do this ^ (it puts the clear text password in the url....)
     hashed_pw = hash_password(password)
     try:
-        new_user = User(username=username, email=email, password=hashed_pw)
-        db.session.add(new_user)
-        db.session.commit()
+        save_new_user(username, hashed_pw, email)
     except Exception as ex:
         return make_response({"error": f"could not create user {str(ex)}"}, 400)
 
@@ -70,7 +68,7 @@ def process_login_template():
     password = request.form["password"]
 
     # First, let's check if the user exists
-    the_user = User.query.filter_by(username=username).first()
+    the_user = find_single_user(username=username)
     if the_user is None:
         return render_template("login.html", logged_in=False, message=INVALID_MESSAGE)
 
@@ -87,7 +85,7 @@ def process_login():
     password = request.form["password"]
 
     # First, let's check if the user exists
-    the_user = User.query.filter_by(username=username).first()
+    the_user = find_single_user(username=username)
     if the_user is None:
         return INVALID_MESSAGE
 
