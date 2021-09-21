@@ -27,10 +27,6 @@ def create_user_template():
 
 @app.route("/create", methods=["POST"])
 def create_user():
-
-    data = request.json
-    print(data)
-
     username = request.form["username"]
     email = request.form["email"]
     password = request.form["password"]
