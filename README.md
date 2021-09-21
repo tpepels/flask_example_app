@@ -15,3 +15,12 @@
 - Templating with Jinja
 - Using different REST endpoints for different client purposes
 - Writing a simple terminal application to access REST endpoints
+
+## Requirements
+The app requires Python 3 and a virtual environment with at least the following packages and their dependencies installed
+- PyInquirer
+- requests
+- flask
+- sqlalchemy
+- pymongo
+- flask-sqlalchemy
